@@ -191,3 +191,227 @@ const isValid = s => {
     return ansArr.length > 0 ? false : true;
 };
 isValid("()[]{[}]");
+
+// ---------------------- //
+// CREATING A LINKED LIST //
+// ---------------------- //
+class Node {
+    constructor(data, next = null) {
+        this.data = data;
+        this.next = next;
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+        this.size = 0;
+    }
+
+    // Insert first node
+    insertFirst(data) {
+        this.head = new Node(data, this.head);
+        this.size++;
+    }
+
+    // Insert at last node
+    insertLast(data) {
+        let node = new Node(data);
+        let current;
+
+        // If empty, then make head
+        if (!this.head) {
+            this.head = node;
+        } else {
+            //set current to the start of the list
+            current = this.head;
+
+            // traverse thru the list while a node has a next property
+            while (current.next) {
+                // set current variable to the next node
+                current = current.next;
+            }
+            // after getting to the end of the list, set the next property on last list item to the new node data
+            current.next = node;
+        }
+
+        this.size++;
+    }
+
+    // Insert at index
+    insertAt(data, index) {
+        // if index is out of range, return
+        if (index > 0 && index > this.size) {
+            return;
+        }
+
+        // If first index, set to head
+        if (index === 0) {
+            this.head = new Node(data, this.head);
+            return;
+        }
+
+        const node = new Node(data);
+        let current, previous;
+
+        // Set current to first
+        current = this.head;
+        let count = 0;
+
+        while (count < index) {
+            previous = current; // Node before the index we wanna insert at
+            count++;
+            current = current.next; // Node after the index we wanna insert at
+        }
+
+        node.next = current;
+        previous.next = node;
+
+        this.size++;
+    }
+
+    // Get at index
+    getAt(index) {
+        let current = this.head;
+        let count = 0;
+
+        // loop through list while a next node exists
+        while (current) {
+            // if count, which is current index of ll, is equal to desired index, console.log the data
+            if (count === index) {
+                console.log("get at", current.data);
+                return;
+            }
+            // increase counter
+            count++;
+            // set current node to next node and repeat while loop
+            current = current.next;
+        }
+
+        return null;
+    }
+
+    // Remove at index
+    removeAt(index) {
+        if (index > 0 && index > this.size) {
+            console.log("cannot remove index because it does not exist");
+            return;
+        }
+
+        let current = this.head;
+        let previous;
+        let count = 0;
+
+        // If it's first index...
+        if (index === 0) {
+            this.head = current.next;
+        } else {
+            while (count < index) {
+                count++;
+                previous = current;
+                current = current.next;
+            }
+
+            previous.next = current.next;
+        }
+
+        this.size--;
+    }
+
+    // Clear the list
+    clearList() {
+        this.head = null;
+        this.size = 0;
+    }
+
+    // Print the list data
+    printListData() {
+        let current = this.head;
+
+        while (current) {
+            console.log("print list data", current);
+            current = current.next;
+        }
+    }
+
+    reverseLinkList2(start, end) {
+        let current = this.head;
+        if (current == null) {
+            return null;
+        }
+
+        let prev = null;
+
+        while (start > 1) {
+            prev = current;
+            current = current.next;
+            start--;
+            end--;
+        }
+
+        let connection = prev;
+        let tail = current;
+
+        while (end > 0) {
+            let nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+            end--;
+        }
+
+        if (connection != null) {
+            connection.next = prev;
+        } else {
+            current = prev;
+        }
+
+        tail.next = current;
+        console.log("head", this.head);
+
+        return this.head;
+    }
+}
+
+const ll = new LinkedList();
+
+ll.insertFirst(5);
+ll.insertFirst(4);
+ll.insertFirst(3);
+ll.insertFirst(2);
+ll.insertFirst(1);
+// ll.insertAt(500, 2);
+
+// ll.getAt(4);
+// ll.removeAt(4);
+
+// ll.clearList();
+
+ll.printListData();
+ll.reverseLinkList2(2, 4);
+// ---------------------------- //
+// REVERSE A SINGLY LINKED LIST //
+// ---------------------------- //
+const reverseLinkedList = head => {
+    let current = head;
+    let previousNode = null;
+    let nextNode = null;
+
+    // nextNode: null
+    // current.next: 4;
+    // previousNode: 5;
+    // current: null
+
+    while (current) {
+        nextNode = current.next;
+        current.next = previousNode;
+        previousNode = current;
+        current = nextNode;
+    }
+
+    return previousNode;
+};
+
+// ---------------------------- //
+// REVERSE A SINGLY LINKED LIST 2 (MEDIUM) //
+// ---------------------------- //
